@@ -79,3 +79,9 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
+
+alias python="python3"
+alias pip="pip3"
+alias m="python manage.py"
+alias r="python manage.py runserver 0.0.0.0:8000"
+alias shell="python -i /vagrant/scripts/django_shell.py"
