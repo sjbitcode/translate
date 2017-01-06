@@ -34,6 +34,6 @@ if __name__ == '__main__':
 
     # Easy model functions.
     ph = lambda: Phrase.objects.all()
-    tl = lambda: TranslateEvent.objects.all()
+    te = lambda: TranslateEvent.objects.all()
 
     print_header()
