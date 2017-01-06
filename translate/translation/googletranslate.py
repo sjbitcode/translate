@@ -4,7 +4,6 @@ from google.cloud import translate
 class GoogleTranslate():
     def __init__(self):
         self.translate_client = translate.Client()
-        self.default_target = 'en'
 
     def detect_language(self, text):
         '''
@@ -32,15 +31,12 @@ class GoogleTranslate():
             'detectedSourceLanguage': 'es'
         }
         '''
-        if not target_lang:
-            target_lang = self.default_target
-
         return self.translate_client.translate(
             text,
             target_language=target_lang
         )
 
-    def language_list(self, target):
+    def language_list(self, target_lang='en'):
         '''
         Returns all supported languages for API.
 
@@ -48,9 +44,15 @@ class GoogleTranslate():
         [
             {'name': 'Afrikaans', 'language': 'af'},
             {'name': 'Albanian', 'language': 'sq'},
-            ...
             {'name': 'Zulu', 'language': 'zu'}
         ]
         '''
-        target = self.default_target
-        return self.translate_client.get_languages(target_language=target)
+        return self.translate_client.get_languages(target_language=target_lang)
+
+    def language_supported(self, target_lang):
+        '''
+        Determines if given language is supported.
+        '''
+        language_list = self.language_list()
+
+        return any(d['language'] == target_lang for d in language_list) 
