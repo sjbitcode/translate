@@ -2,3 +2,4 @@ Django==1.10.5
 djangorestframework==3.5.3
 gunicorn==19.6.0
 psycopg2==2.6.2
+google-cloud-translate==0.22.0
