@@ -32,7 +32,13 @@
                             </td>
 
                             <td class="col col-lg-6 screens text-center">
-                                <show-results></show-results>
+                                <div ng-if="results!==true">
+                                    what are you waiting for?
+                                </div>
+
+                                <div ng-if="results==true">
+                                    <show-results></show-results>
+                                </div>
                             </td>
 
                         </tr>

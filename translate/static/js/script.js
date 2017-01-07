@@ -2,6 +2,8 @@ var app = angular.module('translateapp', [])
 
 app.controller('TranslationsController',
     function($scope, $http, $httpParamSerializerJQLike) { 
+        $scope.results = false;
+
         $scope.submit = function() {
             $scope.translateForm.$setPristine();
             $http({
@@ -13,7 +15,8 @@ app.controller('TranslationsController',
                 }
             })
             .then(function(response){
-                console.log(response.data);
+                console.log(response);
+                $scope.results = true
                 $scope.inputText = response.data.input;
                 $scope.sourceLanguage = response.data.detectedSourceLanguage;
                 $scope.translatedText = response.data.translatedText;
