@@ -8,7 +8,7 @@ app.controller('TranslationsController',
             $scope.translateForm.$setPristine();
             $http({
                 method: 'POST',
-                url: 'http://127.0.0.1:9000/translate/',
+                url: '/translate/',
                 data: $httpParamSerializerJQLike({text: $scope.translate.text, language: 'en'}),
                 headers: {
                   'Content-Type': 'application/x-www-form-urlencoded'

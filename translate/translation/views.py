@@ -1,3 +1,5 @@
+import html
+
 from django.shortcuts import render
 
 from rest_framework import generics, status
@@ -67,6 +69,10 @@ class Translate(generics.GenericAPIView):
 
             # Translate text and create Phrase, TranslateEvent models.
             result = g.translate_text(input_text, target_language)
+
+            # Unescape html characters, ex. change "&#39" to "'"
+            for key, value in result.items():
+                result[key] = html.unescape(value)
 
             p1, created = Phrase.objects.get_or_create(
                 text=result.get('input'),

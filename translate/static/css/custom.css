@@ -27,3 +27,7 @@ body {
 textarea.ng-pristine {
     border-color: none;
 }
+
+tr td:last-child {
+    background-color: #F9F9F9;
+}

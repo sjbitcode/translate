@@ -13,7 +13,7 @@
         <div class="container" ng-controller="TranslationsController">
             {% verbatim %}
                 <div class="jumbotron">
-                    <h1>translatr</h1>
+                    <h1>translater</h1>
                     <p>Translate text to English</p>
                 </div>
                 <div class="row center">
@@ -32,9 +32,9 @@
                             </td>
 
                             <td class="col col-lg-6 screens text-center">
-                                <div ng-if="results!==true">
+                                <h3 id="default-msg" ng-if="results!==true">
                                     what are you waiting for?
-                                </div>
+                                </h3>
 
                                 <div ng-if="results==true">
                                     <show-results></show-results>
