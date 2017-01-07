@@ -1,5 +1,3 @@
-from django.shortcuts import get_object_or_404
-
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,7 +9,6 @@ from .serializers import (
     TranslateEventSerializer,
     InputSerializer
 )
-from translate.paginators import CustomPagination
 
 
 class TranslationEventList(generics.ListAPIView):
@@ -21,58 +18,22 @@ class TranslationEventList(generics.ListAPIView):
     queryset = TranslateEvent.objects.all()
     serializer_class = TranslateEventSerializer
 
-    # def get_serializer_context(self):
-    #     return {
-    #         'request': self.request,
-    #     }
-
-    # def get(self, request, format=None):
-    #     queryset = self.get_queryset()
-    #     #translations = TranslateEvent.objects.all()
-    #     translation_serializer = self.get_serializer_class()(
-    #         #translations,
-    #         queryset,
-    #         #context={'request': request},
-    #         #many=True
-    #     )
-    #     # import pdb; pdb.set_trace()
-    #     return Response(
-    #         translation_serializer.data,
-    #         status=status.HTTP_200_OK
-    #     )
-
 
 class PhraseDetail(generics.RetrieveAPIView):
     '''
     Get Phrase detail.
     '''
-    #lookup_field = 'pk'
     queryset = Phrase.objects.all()
     serializer_class = PhraseSerializer
-
-    # def get(self, request, pk):
-    #     phrase = get_object_or_404(Phrase, pk=pk)
-    #     phrase_serializer = self.get_serializer_class()(phrase)
-
-    #     return Response(
-    #         phrase_serializer.data,
-    #         status=status.HTTP_200_OK
-    #     )
 
 
 class LanguageList(APIView):
     '''
     Returns list of supported languages.
     '''
-    # pagination_class = CustomPagination
-
     def get(self, request, format=None):
         g = GoogleTranslate()
         language_list = g.language_list()
-
-        # page = self.paginate_queryset(language_list)
-        # if page is not None:
-        #     return self.get_paginated_response(language_list)
 
         return Response(
             language_list,
