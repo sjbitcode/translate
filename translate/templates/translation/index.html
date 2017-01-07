@@ -19,43 +19,24 @@
                 <div class="row center">
                     <table class="table">
                         <tr>
-                            <td class="col-lg-8 screens">
-                                <form class="center">
+
+                            <td class="col col-lg-6 screens">
+                                <form name="translateForm" ng-submit="submit()">
                                     <div class="form-group">
-                                    <!-- <input type="text" class="form-control" placeholder="Cómo estás"> -->
-                                    <textarea class="form-control" rows="5" placeholder="Cómo estás"></textarea>
+                                    <textarea class="form-control" name="formInput" rows="5" placeholder="Cómo estás" ng-model="translate.text" required></textarea>
                                     <br>
+                                    <span id="form-message" ng-show="translateForm.formInput.$touched && translateForm.formInput.$invalid">text is required.</span>
                                     <button type="submit" class="btn btn-primary">translate</button>
                                     </div>
                                 </form>
                             </td>
-                            <td class="col-lg-8 screens">
-                                <p ng-model="inputText"></p>
-                                <span ng-model="SourceLanguage"></span>
 
-                                <p ng-model="translatedText"></p>
-                                <span ng-model="targetLanguage"></span>
+                            <td class="col col-lg-6 screens text-center">
+                                <show-results></show-results>
                             </td>
+
                         </tr>
                     </table>
-
-                    <!-- <div class="col-lg-6 screens">
-                        <form class="center">
-                            <div class="form-group">
-                                <textarea class="form-control" rows="5" placeholder="Cómo estás"></textarea>
-                                <br>
-                                <button type="submit" class="btn btn-primary">translate</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-6 screens"> 
-                        <p ng-model="inputText"></p>
-                        <span ng-model="SourceLanguage"></span>
-
-                        <p ng-model="translatedText"></p>
-                        <span ng-model="targetLanguage"></span>
-                    </div>
- -->
                 </div>
             {% endverbatim %}
             

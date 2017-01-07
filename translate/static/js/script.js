@@ -1,35 +1,41 @@
 var app = angular.module('translateapp', [])
 
-app.controller('TranslateEventController',
-    function($scope) {
-        $scope.firstName = 'Coffeemug';
-        $scope.translations = [
-            {username: 'bjorn', hometown: 'kattegat'},
-            {username: 'ragnar', hometown: 'norway'},
-            {username: 'lagertha', hometown: 'somewhere else'},
-            {username: 'ecbert', hometown: 'england'}
-        ]
-    }
-)
-
 app.controller('TranslationsController',
-    function($scope, $http) {
-        $http({
-                method: 'GET',
-                url: 'http://127.0.0.1:9000/languages/'
+    function($scope, $http, $httpParamSerializerJQLike) { 
+        $scope.submit = function() {
+            $scope.translateForm.$setPristine();
+            $http({
+                method: 'POST',
+                url: 'http://127.0.0.1:9000/translate/',
+                data: $httpParamSerializerJQLike({text: $scope.translate.text, language: 'en'}),
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                }
             })
             .then(function(response){
-                $scope.myData = response.data
+                console.log(response.data);
+                $scope.inputText = response.data.input;
+                $scope.sourceLanguage = response.data.detectedSourceLanguage;
+                $scope.translatedText = response.data.translatedText;
+                $scope.targetLanguage = response.data.targetLanguage;
+                
+                //$scope.translateForm.$setUntouched();
             })
+            .catch(function(error){
+                console.error(error);
+            })
+
+
+        }
     }
 )
 
-app.directive('myCoolDirective', function(){
+app.directive('showResults', function(){
     return {
-        restrict: 'EC',
-        template: '<h1>YOOOO WASSUP</h1>'
-    };
-});
+        restrict: 'E',
+        template: '<h3>"{{inputText}}"</h3><p>translated from: {{sourceLanguage}}</p><h3>"{{translatedText}}"</h3><p>translated to: {{targetLanguage}}</p>'
+    }
+})
 
 app.config([
     '$httpProvider', function($httpProvider) {

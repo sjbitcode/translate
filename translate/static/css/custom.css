@@ -24,3 +24,7 @@ body {
     border-radius: 5px;
     padding: 30px;
 }
+
+textarea.ng-pristine {
+    border-color: none;
+}
