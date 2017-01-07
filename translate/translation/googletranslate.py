@@ -55,4 +55,4 @@ class GoogleTranslate():
         '''
         language_list = self.language_list()
 
-        return any(d['language'] == target_lang for d in language_list) 
+        return any(d['language'] == target_lang for d in language_list)
