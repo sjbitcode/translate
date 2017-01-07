@@ -1,0 +1,64 @@
+{% load staticfiles %}
+<DOCTYPE html>
+<html ng-app="translateapp">
+    <head>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+        <script src="{% static 'js/jquery-3.1.1.js' %}"></script>
+        <script src="{% static 'js/angular-1.6.1.js' %}"></script>
+        <script src="{% static 'js/script.js' %}"></script>
+    </head>
+
+    <body>
+        <div class="container" ng-controller="TranslationsController">
+            {% verbatim %}
+                <div class="jumbotron">
+                    <h1>translatr</h1>
+                    <p>Translate text to English</p>
+                </div>
+                <div class="row center">
+                    <table class="table">
+                        <tr>
+                            <td class="col-lg-8 screens">
+                                <form class="center">
+                                    <div class="form-group">
+                                    <!-- <input type="text" class="form-control" placeholder="Cómo estás"> -->
+                                    <textarea class="form-control" rows="5" placeholder="Cómo estás"></textarea>
+                                    <br>
+                                    <button type="submit" class="btn btn-primary">translate</button>
+                                    </div>
+                                </form>
+                            </td>
+                            <td class="col-lg-8 screens">
+                                <p ng-model="inputText"></p>
+                                <span ng-model="SourceLanguage"></span>
+
+                                <p ng-model="translatedText"></p>
+                                <span ng-model="targetLanguage"></span>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- <div class="col-lg-6 screens">
+                        <form class="center">
+                            <div class="form-group">
+                                <textarea class="form-control" rows="5" placeholder="Cómo estás"></textarea>
+                                <br>
+                                <button type="submit" class="btn btn-primary">translate</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-6 screens"> 
+                        <p ng-model="inputText"></p>
+                        <span ng-model="SourceLanguage"></span>
+
+                        <p ng-model="translatedText"></p>
+                        <span ng-model="targetLanguage"></span>
+                    </div>
+ -->
+                </div>
+            {% endverbatim %}
+            
+        </div>
+    </body>
+</html>

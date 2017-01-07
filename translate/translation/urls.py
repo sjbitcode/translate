@@ -5,6 +5,12 @@ from . import views
 
 urlpatterns = [
     url(
+        r'^translateapp/$',
+        views.index,
+        name='index'
+    ),
+
+    url(
         r'^translations/$',
         views.TranslationEventList.as_view(),
         name='translations'
