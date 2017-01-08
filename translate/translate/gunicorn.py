@@ -6,7 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 settings = os.environ.get('DJANGO_SETTINGS_MODULE')
 raw_env = 'DJANGO_SETTINGS_MODULE={}'.format(settings)
 
-HOST = '0.0.0.0'
+HOST = '127.0.0.1'
 
 PORT = '8000'
 
