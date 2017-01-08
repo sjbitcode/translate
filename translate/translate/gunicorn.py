@@ -12,9 +12,9 @@ PORT = '8000'
 
 bind = '{}:{}'.format(HOST, PORT)
 
-accesslog = '/vagrant/logs/gunicorn/gunicorn-access.log'
+accesslog = '/var/log/gunicorn/access.log'
 
-errorlog = '/vagrant/logs/gunicorn/gunicorn-error.log'
+errorlog = '/var/log/gunicorn/error.log'
 
 workers = 1
 

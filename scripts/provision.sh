@@ -10,4 +10,4 @@ sudo apt-get install -y tree
 sudo apt-get install -y git
 sudo apt-get install -y libpq-dev postgresql postgresql-contrib
 
-sudo mkdir -p /vagrant/logs/gunicorn
+sudo mkdir -p /var/log/gunicorn
