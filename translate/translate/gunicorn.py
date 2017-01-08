@@ -3,8 +3,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # settings ex. translate.settings.production
-settings = os.environ.get('DJANGO_SETTINGS_MODULE')
-raw_env = 'DJANGO_SETTINGS_MODULE={}'.format(settings)
+# settings = os.environ.get('DJANGO_SETTINGS_MODULE')
+# raw_env = 'DJANGO_SETTINGS_MODULE={}'.format(settings)
 
 HOST = '127.0.0.1'
 
