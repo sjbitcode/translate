@@ -25,7 +25,7 @@ SECRET_KEY = '%3dk3s4pw3xgp*f!bhl1*rj5t1icqx0qysdlpcek3w0)hy!@59'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -129,10 +129,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-print('staticfiles dirs: {}'.format(os.path.join(BASE_DIR, 'static')))
+STATIC_ROOT = '/app/static/'
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
