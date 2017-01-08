@@ -80,8 +80,12 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+alias pycls='find . -name '\''*.pyc'\'' -print0|xargs -0 rm'
+alias chcls='find . -name '\''*__pycache__'\'' -print0|xargs -0 rm -rf'
 alias python="python3"
 alias pip="pip3"
 alias m="python manage.py"
 alias r="python manage.py runserver 0.0.0.0:8000"
 alias shell="python -i /vagrant/scripts/django_shell.py"
+alias collectstatic="sudo python3 manage.py collectstatic"
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/file"
