@@ -89,5 +89,5 @@ alias r="python manage.py runserver 0.0.0.0:8000"
 alias shell="python -i /vagrant/scripts/django_shell.py"
 alias collectstatic="sudo python3 manage.py collectstatic"
 export DJANGO_SECRET_KEY='django-secret-key'
-export DJANGO_SETTINGS_MODULE='env-setting'
+export DJANGO_SETTINGS_MODULE='translate.settings.local'
 export GOOGLE_APPLICATION_CREDENTIALS="/path/to/file"
