@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     url(
-        r'^translateapp/$',
+        r'^$',
         views.index,
         name='index'
     ),
