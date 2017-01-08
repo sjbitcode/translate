@@ -28,3 +28,6 @@ urlpatterns = [
 
     url(r'', include('translation.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+handler404 = "translation.views.handler404"
+handler500 = "translation.views.handler500"

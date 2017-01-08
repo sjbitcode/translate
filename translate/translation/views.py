@@ -1,6 +1,7 @@
 import html
 
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
 
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -13,6 +14,20 @@ from .serializers import (
     TranslateEventSerializer,
     InputSerializer
 )
+
+
+def errorHandler(request, template, status):
+    response = render_to_response(template, context=RequestContext(request))
+    response.status_code = status
+    return response
+
+
+def handler404(request):
+    return errorHandler(request, "translation/404.html", 404)
+
+
+def handler500(request):
+    return errorHandler(request, 'translation/500.html', 500)
 
 
 def index(request):
