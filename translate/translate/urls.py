@@ -18,7 +18,9 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 
+
 urlpatterns = [
+
     url(r'^admin/', admin.site.urls),
 
     url(
@@ -26,8 +28,18 @@ urlpatterns = [
         include('rest_framework.urls', namespace='rest_framework')
     ),
 
-    url(r'', include('translation.urls')),
+    url(
+        r'^',
+        include('translation.urls')
+    ),
+
+    url(
+        r'^docs/',
+        include('rest_framework_docs.urls')
+    ),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 
 handler404 = "translation.views.handler404"
 handler500 = "translation.views.handler500"
