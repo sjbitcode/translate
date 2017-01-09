@@ -52,7 +52,11 @@ class Phrase(models.Model):
     )
 
     def __str__(self):
-        return '{} - {}'.format(self.text, self.language.language_code)
+        return '{} - {}'.format(self.text, self.language.name)
+
+    @property
+    def language_name(self):
+        return self.language.name
 
 
 class TranslateEvent(models.Model):

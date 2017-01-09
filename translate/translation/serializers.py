@@ -23,9 +23,23 @@ class TranslateEventSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PhraseSerializer(serializers.HyperlinkedModelSerializer):
+    # language = serializers.HyperlinkedRelatedField(
+    #     view_name='language-detail',
+    #     lookup_field='pk',
+    #     read_only=True
+    # )
+    language_name = serializers.ReadOnlyField()
+
     class Meta:
         model = Phrase
-        fields = ('text', 'language')
+        # fields = ('text', 'language')
+        fields = ('text', 'language_name')
+
+
+class LanguageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Language
+        fields = ('name', 'code')
 
 
 class InputSerializer(serializers.Serializer):
@@ -44,7 +58,7 @@ class InputSerializer(serializers.Serializer):
         if value:
             # if value is a language name, return the language code
             if Language.objects.filter(name__iexact=value).exists():
-                return Language.objects.get(name__iexact=value).language_code
+                return Language.objects.get(name__iexact=value).code
             # if value is a language code, return the language code
             elif Language.objects.filter(code__iexact=value).exists():
                 return value

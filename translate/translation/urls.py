@@ -17,6 +17,12 @@ urlpatterns = [
     ),
 
     url(
+        r'^language/(?P<pk>\d+)$',
+        views.LanguageDetail.as_view(),
+        name='language-detail'
+    ),
+
+    url(
         r'^phrase/(?P<pk>\d+)/$',
         views.PhraseDetail.as_view(),
         name='phrase-detail'

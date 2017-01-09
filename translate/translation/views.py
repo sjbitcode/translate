@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from .googletranslate import GoogleTranslate
 from .models import Language, Phrase, TranslateEvent
 from .serializers import (
+    LanguageSerializer,
     PhraseSerializer,
     TranslateEventSerializer,
     InputSerializer
@@ -48,6 +49,14 @@ class PhraseDetail(generics.RetrieveAPIView):
     '''
     queryset = Phrase.objects.all()
     serializer_class = PhraseSerializer
+
+
+class LanguageDetail(generics.RetrieveAPIView):
+    '''
+    Get Language detail.
+    '''
+    queryset = Language.objects.all()
+    serializer_class = LanguageSerializer
 
 
 class LanguageList(APIView):
@@ -90,11 +99,11 @@ class Translate(generics.GenericAPIView):
                 result[key] = html.unescape(value)
 
             # Get or create models to create a TranslateEvent object.
-            l1, created = Language.objects.get(
+            l1 = Language.objects.get(
                     code=result.get('detectedSourceLanguage')
             )
 
-            l2, created = Language.objects.get(
+            l2 = Language.objects.get(
                     code=target_language
             )
 
@@ -113,10 +122,19 @@ class Translate(generics.GenericAPIView):
                 translated_text=p2,
             )
 
+            result_dict = {
+                'detectedLanguageCode': l1.code,
+                'detecedLanguageName': l1.name,
+                'inputText': p1.text,
+                'targetLanguageCode': l2.code,
+                'targetLanguageName': l2.name,
+                'translatedText': p2.text
+            }
+
             # Add target language to response.
-            result['targetLanguage'] = target_language
+            #result['targetLanguage'] = target_language
             return Response(
-                result,
+                result_dict,
                 status=status.HTTP_200_OK
             )
 
