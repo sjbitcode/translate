@@ -62,20 +62,18 @@ class TranslateEvent(models.Model):
     '''
     input_text = models.ForeignKey(
         Phrase,
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         related_name='inputted',
         verbose_name='Input text',
-        help_text='Phrase input for translation',
-        null=True
+        help_text='Phrase input for translation'
     )
 
     translated_text = models.ForeignKey(
         Phrase,
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         related_name='translated',
         verbose_name='Translated text',
-        help_text='Phrase translation',
-        null=True
+        help_text='Phrase translation'
     )
 
     created_on = models.DateTimeField(auto_now_add=True)
