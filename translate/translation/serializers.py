@@ -62,7 +62,7 @@ class PhraseSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('text', 'language_name', 'language_code')
 
 
-class LanguageSerializer(serializers.HyperlinkedModelSerializer):
+class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Language
         fields = ('name', 'code')
