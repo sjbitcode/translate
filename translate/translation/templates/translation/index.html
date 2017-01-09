@@ -37,10 +37,34 @@
                                 </h3>
 
                                 <div ng-if="results==true">
-                                    <show-results></show-results>
+                                    <!-- <show-results></show-results> -->
+                                    {{ inputText }}
+                                    <br>
+                                    {{ detectedLanguageName }}
+                                    <br>
+                                    {{ detectedLanguageCode }}
+                                    <br>
+                                    {{ translatedText }}
+                                    <br>
+                                    {{ targetLanguageName }}
+                                    <br>
+                                    {{ targetLanguageCode }}
                                 </div>
                             </td>
 
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="row center">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                <td>detected language</td>
+                                <td>input text</td>
+                                <td>translated language</td>
+                                <td>translated text</td>
+                            </th>
                         </tr>
                     </table>
                 </div>
