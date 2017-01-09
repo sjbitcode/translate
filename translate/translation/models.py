@@ -13,7 +13,7 @@ class Language(models.Model):
         help_text='Name of the language'
     )
 
-    language_code = models.CharField(
+    code = models.CharField(
         max_length=10,
         verbose_name='Language code',
         help_text='The ISO639-1 language code'

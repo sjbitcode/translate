@@ -46,7 +46,7 @@ class InputSerializer(serializers.Serializer):
             if Language.objects.filter(name__iexact=value).exists():
                 return Language.objects.get(name__iexact=value).language_code
             # if value is a language code, return the language code
-            elif Language.objects.filter(language_code__iexact=value).exists():
+            elif Language.objects.filter(code__iexact=value).exists():
                 return value
             # else language doesn't exist, so raise exception
             else:

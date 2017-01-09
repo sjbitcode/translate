@@ -91,11 +91,11 @@ class Translate(generics.GenericAPIView):
 
             # Get or create models to create a TranslateEvent object.
             l1, created = Language.objects.get(
-                    language_code=result.get('detectedSourceLanguage')
+                    code=result.get('detectedSourceLanguage')
             )
 
             l2, created = Language.objects.get(
-                    language_code=target_language
+                    code=target_language
             )
 
             p1, created = Phrase.objects.get_or_create(
