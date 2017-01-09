@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .googletranslate import GoogleTranslate
-from .models import Phrase, TranslateEvent
+from .models import Language, Phrase, TranslateEvent
 
 
 class TranslateEventSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,7 +25,7 @@ class TranslateEventSerializer(serializers.HyperlinkedModelSerializer):
 class PhraseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Phrase
-        fields = ('text', 'language_code')
+        fields = ('text', 'language')
 
 
 class InputSerializer(serializers.Serializer):
@@ -37,8 +37,18 @@ class InputSerializer(serializers.Serializer):
     )
 
     def validate_language(self, value):
+        '''
+        If language is supplied, check to see if it exists.
+        Check if a valid.
+        '''
         if value:
-            g = GoogleTranslate()
-            if not g.language_supported(value):
+            # if value is a language name, return the language code
+            if Language.objects.filter(name__iexact=value).exists():
+                return Language.objects.get(name__iexact=value).language_code
+            # if value is a language code, return the language code
+            elif Language.objects.filter(language_code__iexact=value).exists():
+                return value
+            # else language doesn't exist, so raise exception
+            else:
                 raise serializers.ValidationError('Language not supported')
-        return value
+            return value

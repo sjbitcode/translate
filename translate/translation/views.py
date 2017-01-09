@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .googletranslate import GoogleTranslate
-from .models import Phrase, TranslateEvent
+from .models import Language, Phrase, TranslateEvent
 from .serializers import (
     PhraseSerializer,
     TranslateEventSerializer,
@@ -89,14 +89,23 @@ class Translate(generics.GenericAPIView):
             for key, value in result.items():
                 result[key] = html.unescape(value)
 
+            # Get or create models to create a TranslateEvent object.
+            l1, created = Language.objects.get(
+                    language_code=result.get('detectedSourceLanguage')
+            )
+
+            l2, created = Language.objects.get(
+                    language_code=target_language
+            )
+
             p1, created = Phrase.objects.get_or_create(
                 text=result.get('input'),
-                language_code=result.get('detectedSourceLanguage')
+                language=l1
             )
 
             p2, created = Phrase.objects.get_or_create(
                 text=result.get('translatedText'),
-                language_code=target_language
+                language=l2
             )
 
             te, created = TranslateEvent.objects.get_or_create(

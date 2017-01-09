@@ -1,6 +1,28 @@
 from django.db import models
 
 
+class Language(models.Model):
+    '''
+    A language represents
+        - name of language
+        - language code
+    '''
+    name = models.CharField(
+        max_length=100,
+        verbose_name='Language name',
+        help_text='Name of the language'
+    )
+
+    language_code = models.CharField(
+        max_length=10,
+        verbose_name='Language code',
+        help_text='The ISO639-1 language code'
+    )
+
+    def __str__(self):
+        return self.name
+
+
 class Phrase(models.Model):
     '''
     A phrase represents some text in a language
@@ -12,10 +34,12 @@ class Phrase(models.Model):
         help_text='The phrase text'
     )
 
-    language_code = models.CharField(
-        max_length=10,
-        verbose_name='Language code',
-        help_text='The ISO639-1 language code'
+    language = models.ForeignKey(
+        Language,
+        on_delete=models.CASCADE,
+        related_name='phrases',
+        verbose_name='Phrase language',
+        help_text='The phrase language'
     )
 
     translation = models.ManyToManyField(
@@ -28,7 +52,7 @@ class Phrase(models.Model):
     )
 
     def __str__(self):
-        return '{} - {}'.format(self.text, self.language_code)
+        return '{} - {}'.format(self.text, self.language.language_code)
 
 
 class TranslateEvent(models.Model):
@@ -58,5 +82,5 @@ class TranslateEvent(models.Model):
 
     def __str__(self):
         return '{} -> {}'.format(
-            self.input_text.language_code, self.translated_text.language_code
+            self.input_text.text, self.translated_text.text
         )
