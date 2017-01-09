@@ -44,7 +44,7 @@ class TranslateEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TranslateEvent
-        fields = ('input_text', 'translated_text')
+        fields = ('id', 'input_text', 'translated_text')
 
 
 class PhraseSerializer(serializers.HyperlinkedModelSerializer):
@@ -59,13 +59,13 @@ class PhraseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Phrase
         # fields = ('text', 'language')
-        fields = ('text', 'language_name', 'language_code')
+        fields = ('id', 'text', 'language_name', 'language_code')
 
 
 class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Language
-        fields = ('name', 'code')
+        fields = ('id', 'name', 'code')
 
 
 class InputSerializer(serializers.Serializer):
