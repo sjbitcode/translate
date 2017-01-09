@@ -122,18 +122,8 @@ class Translate(generics.GenericAPIView):
                 translated_text=p2,
             )
 
-            # Create and return Response object.
-            result_dict = {
-                'detectedLanguageCode': l1.code,
-                'detectedLanguageName': l1.name,
-                'inputText': p1.text,
-                'targetLanguageCode': l2.code,
-                'targetLanguageName': l2.name,
-                'translatedText': p2.text
-            }
-
             return Response(
-                result_dict,
+                TranslateEventSerializer(te).data,
                 status=status.HTTP_200_OK
             )
 
