@@ -122,17 +122,16 @@ class Translate(generics.GenericAPIView):
                 translated_text=p2,
             )
 
+            # Create and return Response object.
             result_dict = {
                 'detectedLanguageCode': l1.code,
-                'detecedLanguageName': l1.name,
+                'detectedLanguageName': l1.name,
                 'inputText': p1.text,
                 'targetLanguageCode': l2.code,
                 'targetLanguageName': l2.name,
                 'translatedText': p2.text
             }
 
-            # Add target language to response.
-            #result['targetLanguage'] = target_language
             return Response(
                 result_dict,
                 status=status.HTTP_200_OK
