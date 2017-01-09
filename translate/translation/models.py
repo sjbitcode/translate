@@ -58,6 +58,10 @@ class Phrase(models.Model):
     def language_name(self):
         return self.language.name
 
+    @property
+    def language_code(self):
+        return self.language.code
+
 
 class TranslateEvent(models.Model):
     '''

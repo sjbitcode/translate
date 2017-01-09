@@ -4,18 +4,43 @@ from .googletranslate import GoogleTranslate
 from .models import Language, Phrase, TranslateEvent
 
 
-class TranslateEventSerializer(serializers.HyperlinkedModelSerializer):
-    input_text = serializers.HyperlinkedRelatedField(
-        view_name='phrase-detail',
-        lookup_field='pk',
-        read_only=True
-    )
+# class TranslateEventSerializer(serializers.HyperlinkedModelSerializer):
+#     input_text = serializers.HyperlinkedRelatedField(
+#         view_name='phrase-detail',
+#         lookup_field='pk',
+#         read_only=True
+#     )
 
-    translated_text = serializers.HyperlinkedRelatedField(
-        view_name='phrase-detail',
-        lookup_field='pk',
-        read_only=True
-    )
+#     translated_text = serializers.HyperlinkedRelatedField(
+#         view_name='phrase-detail',
+#         lookup_field='pk',
+#         read_only=True
+#     )
+
+#     class Meta:
+#         model = TranslateEvent
+#         fields = ('input_text', 'translated_text')
+
+class TranslateEventSerializer(serializers.ModelSerializer):
+
+    input_text = serializers.SerializerMethodField('get_input_phrase_info')
+    translated_text = serializers.SerializerMethodField('get_translated_phrase_info')
+
+    def get_input_phrase_info(self, translate_event):
+        phrase = translate_event.input_text
+        return {
+            'text': phrase.text,
+            'language_name': phrase.language_name,
+            'language_code': phrase.language_code
+        }
+
+    def get_translated_phrase_info(self, translate_event):
+        phrase = translate_event.translated_text
+        return {
+            'text': phrase.text,
+            'language_name': phrase.language_name,
+            'language_code': phrase.language_code
+        }
 
     class Meta:
         model = TranslateEvent
@@ -29,11 +54,12 @@ class PhraseSerializer(serializers.HyperlinkedModelSerializer):
     #     read_only=True
     # )
     language_name = serializers.ReadOnlyField()
+    language_code = serializers.ReadOnlyField()
 
     class Meta:
         model = Phrase
         # fields = ('text', 'language')
-        fields = ('text', 'language_name')
+        fields = ('text', 'language_name', 'language_code')
 
 
 class LanguageSerializer(serializers.HyperlinkedModelSerializer):
