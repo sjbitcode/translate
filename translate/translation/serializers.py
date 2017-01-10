@@ -1,3 +1,5 @@
+from django.core.exceptions import ObjectDoesNotExist
+
 from rest_framework import serializers
 
 from .googletranslate import GoogleTranslate
@@ -75,6 +77,19 @@ class InputSerializer(serializers.Serializer):
         allow_blank=True,
         required=False
     )
+
+    def validate_text(self, value):
+        '''
+        Check if text can be translated.
+        1. Use googletranslate to detect language of given text.
+        2. If language is found, ok. If not, raise exception.
+        '''
+        g = GoogleTranslate()
+        language_code = g.detect_language(text=value).get('language')
+
+        if not Language.objects.filter(code=language_code).exists():
+            raise serializers.ValidationError('Unable to recognize text')
+        return value
 
     def validate_language(self, value):
         '''

@@ -37,6 +37,7 @@ app.controller('TranslationsController',
             })
             .catch(function(error){
                 console.error(error);
+                alert('Something went wrong!');
             })
         }
 
