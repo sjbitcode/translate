@@ -9,7 +9,7 @@ app.controller('TranslationsController',
             $scope.translateForm.$setPristine();
             $http({
                 method: 'POST',
-                url: '/translate/',
+                url: '/api/translate/',
                 data: $httpParamSerializerJQLike({text: $scope.translate.text, language: 'en'}),
                 headers: {
                   'Content-Type': 'application/x-www-form-urlencoded'
@@ -55,7 +55,7 @@ app.controller('TranslationsController',
             // make api call to /translations/ and apply ordering to get latest translation events.
             $http({
                     method: 'GET',
-                    url: '/translations/?ordering=-created_on',
+                    url: '/api/translations/?ordering=-created_on',
                     headers: {
                       'Accept': 'application/json'
                     }

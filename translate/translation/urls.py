@@ -11,31 +11,31 @@ urlpatterns = [
     ),
 
     url(
-        r'^translations/$',
+        r'^api/translations/$',
         views.TranslationEventList.as_view(),
         name='translations'
     ),
 
     url(
-        r'^language/(?P<pk>\d+)$',
+        r'^api/language/(?P<pk>\d+)$',
         views.LanguageDetail.as_view(),
         name='language-detail'
     ),
 
     url(
-        r'^phrase/(?P<pk>\d+)/$',
+        r'^api/phrase/(?P<pk>\d+)/$',
         views.PhraseDetail.as_view(),
         name='phrase-detail'
     ),
 
     url(
-        r'languages/$',
+        r'api/languages/$',
         views.LanguageList.as_view(),
         name='languages'
     ),
 
     url(
-        r'translate/$',
+        r'api/translate/$',
         views.Translate.as_view(),
         name='translate'
     ),

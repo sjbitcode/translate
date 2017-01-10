@@ -35,7 +35,8 @@ urlpatterns = [
 
     url(
         r'^docs/',
-        include('rest_framework_docs.urls')
+        include('rest_framework_docs.urls'),
+        name='docs'
     ),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
