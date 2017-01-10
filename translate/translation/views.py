@@ -3,9 +3,12 @@ import html
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 
+from rest_framework.exceptions import APIException
+from rest_framework.filters import OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from rest_framework import generics, status
 from rest_framework.response import Response
-from rest_framework.views import APIView
+# from rest_framework.views import APIView
 
 from .googletranslate import GoogleTranslate
 from .models import Language, Phrase, TranslateEvent
@@ -15,6 +18,13 @@ from .serializers import (
     TranslateEventSerializer,
     InputSerializer
 )
+
+
+# Service down Exception
+class ServiceUnavailable(APIException):
+    status_code = 503
+    default_detail = 'Service temporarily unavailable, try again later.'
+    default_code = 'service_unavailable'
 
 
 def errorHandler(request, template, status):
@@ -41,6 +51,8 @@ class TranslationEventList(generics.ListAPIView):
     '''
     queryset = TranslateEvent.objects.all()
     serializer_class = TranslateEventSerializer
+    filter_backends = (OrderingFilter,)
+    ordering_fields = ('created_on',)
 
 
 class PhraseDetail(generics.RetrieveAPIView):
@@ -59,18 +71,12 @@ class LanguageDetail(generics.RetrieveAPIView):
     serializer_class = LanguageSerializer
 
 
-class LanguageList(APIView):
+class LanguageList(generics.ListAPIView):
     '''
     Returns list of supported languages.
     '''
-    def get(self, request, format=None):
-        g = GoogleTranslate()
-        language_list = g.language_list()
-
-        return Response(
-            language_list,
-            status=status.HTTP_200_OK
-        )
+    queryset = Language.objects.all()
+    serializer_class = LanguageSerializer
 
 
 class Translate(generics.GenericAPIView):
@@ -85,47 +91,50 @@ class Translate(generics.GenericAPIView):
         input_serializer = self.get_serializer_class()(data=request.data)
 
         if input_serializer.is_valid():
-            g = GoogleTranslate()
+            try:
+                g = GoogleTranslate()
 
-            # Get data from serializer
-            input_text = input_serializer.data.get('text')
-            target_language = input_serializer.data.get('language') or 'en'
+                # Get data from serializer
+                input_text = input_serializer.data.get('text')
+                target_language = input_serializer.data.get('language') or 'en'
 
-            # Translate text and create Phrase, TranslateEvent models.
-            result = g.translate_text(input_text, target_language)
+                # Translate text and create Phrase, TranslateEvent models.
+                result = g.translate_text(input_text, target_language)
 
-            # Unescape html characters, ex. change "&#39" to "'"
-            for key, value in result.items():
-                result[key] = html.unescape(value)
+                # Unescape html characters, ex. change "&#39" to "'"
+                for key, value in result.items():
+                    result[key] = html.unescape(value)
 
-            # Get or create models to create a TranslateEvent object.
-            l1 = Language.objects.get(
-                    code=result.get('detectedSourceLanguage')
-            )
+                # Get or create models to create a TranslateEvent object.
+                l1 = Language.objects.get(
+                        code=result.get('detectedSourceLanguage')
+                )
 
-            l2 = Language.objects.get(
-                    code=target_language
-            )
+                l2 = Language.objects.get(
+                        code=target_language
+                )
 
-            p1, created = Phrase.objects.get_or_create(
-                text=result.get('input'),
-                language=l1
-            )
+                p1, created = Phrase.objects.get_or_create(
+                    text=result.get('input'),
+                    language=l1
+                )
 
-            p2, created = Phrase.objects.get_or_create(
-                text=result.get('translatedText'),
-                language=l2
-            )
+                p2, created = Phrase.objects.get_or_create(
+                    text=result.get('translatedText'),
+                    language=l2
+                )
 
-            te, created = TranslateEvent.objects.get_or_create(
-                input_text=p1,
-                translated_text=p2,
-            )
+                te, created = TranslateEvent.objects.get_or_create(
+                    input_text=p1,
+                    translated_text=p2,
+                )
 
-            return Response(
-                TranslateEventSerializer(te).data,
-                status=status.HTTP_200_OK
-            )
+                return Response(
+                    TranslateEventSerializer(te).data,
+                    status=status.HTTP_200_OK
+                )
+            except Exception:
+                raise ServiceUnavailable
 
         return Response(
             input_serializer.errors,
