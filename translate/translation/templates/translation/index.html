@@ -16,10 +16,10 @@
                     <h1>translater</h1>
                     <p>Translate text to English</p>
                 </div>
-                <div class="row center">
-                    <table class="table">
-                        <tr>
+                <div class="row center table-responsive">
 
+                    <table class="table" id="translateTable">
+                        <tr>
                             <td class="col col-lg-6 screens">
                                 <form name="translateForm" ng-submit="submit()">
                                     <div class="form-group">
@@ -37,37 +37,38 @@
                                 </h3>
 
                                 <div ng-if="results==true">
-                                    <!-- <show-results></show-results> -->
-                                    {{ inputText }}
-                                    <br>
-                                    {{ detectedLanguageName }}
-                                    <br>
-                                    {{ detectedLanguageCode }}
-                                    <br>
-                                    {{ translatedText }}
-                                    <br>
-                                    {{ targetLanguageName }}
-                                    <br>
-                                    {{ targetLanguageCode }}
+                                    <show-results></show-results>
                                 </div>
                             </td>
-
                         </tr>
+
                     </table>
                 </div>
 
-                <div class="row center">
-                    <table class="table">
-                        <tr>
-                            <th>
-                                <td>detected language</td>
-                                <td>input text</td>
-                                <td>translated language</td>
-                                <td>translated text</td>
-                            </th>
-                        </tr>
+                <div class="row center table-responsive">
+
+                    <table class="table table-hover table-striped" id="translationsListTable">
+                        <thead>
+                            <tr>
+                                <th>input text</th>
+                                <th>detected language</th>
+                                <th>translated text</th>
+                                <th>translated language</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr ng-repeat="t in translation_events track by $index">
+                                <td class="text">"{{ t.input_text.text }}"</td>
+                                <td>{{ t.input_text.language_name }} ({{ t.input_text.language_code }})</td>
+                                <td class="text">"{{ t.translated_text.text }}"</td>
+                                <td>{{ t.translated_text.language_name }} ({{ t.translated_text.language_code }})</td>
+                            </tr>
+                        </tbody>
                     </table>
+
                 </div>
+                
             {% endverbatim %}
             <div class="row">
                 <div class="col-md-12 text-center text-grey">

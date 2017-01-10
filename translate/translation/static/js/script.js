@@ -2,17 +2,8 @@ var app = angular.module('translateapp', [])
 
 app.controller('TranslationsController',
     function($scope, $http, $httpParamSerializerJQLike) {
+        // lets us know if api translate call was made
         $scope.results = false;
-
-        //
-        // $scope.results = true
-        // $scope.inputText = 'the inputText';
-        // $scope.detectedLanguageName = 'the sourceLanguageName';
-        // $scope.detectedLanguageCode = 'the sourceLanguageCode';
-        // $scope.translatedText = 'the translatedText';
-        // $scope.targetLanguageName = 'the targetLanguageName';
-        // $scope.targetLanguageCode = 'the targetLanguageCode';
-        //
 
         $scope.submit = function() {
             $scope.translateForm.$setPristine();
@@ -25,7 +16,7 @@ app.controller('TranslationsController',
                 }
             })
             .then(function(response){
-                console.log(response);
+                // console.log(response);
                 $scope.results = true
                 $scope.input_dict = response.data.input_text;
                 $scope.translated_dict = response.data.translated_text;
@@ -38,23 +29,40 @@ app.controller('TranslationsController',
                 $scope.targetLanguageName = $scope.translated_dict.language_name;
                 $scope.targetLanguageCode = $scope.translated_dict.language_code;
                 
-                //$scope.translateForm.$setUntouched();
+                // add new row and delete last to maintain latest 20 translations.
+                $scope.insertRow(response.data);
+                $scope.deleteLastRow();
+
+                // $scope.translateForm.$setUntouched();
             })
             .catch(function(error){
                 console.error(error);
             })
         }
 
+        $scope.insertRow = function(obj) {
+            // insert row
+            $scope.translation_events.unshift(obj);
+            console.log($scope.translation_events);
+        }
+
+        $scope.deleteLastRow = function() {
+            // delete last row
+            $scope.translation_events.pop();
+        }
+
         $scope.loadTranslations = function(){
+            // make api call to /translations/ and apply ordering to get latest translation events.
             $http({
                     method: 'GET',
-                    url: '/translations/',
+                    url: '/translations/?ordering=-created_on',
                     headers: {
                       'Accept': 'application/json'
                     }
             })
-            .then(function(response){
-                console.log(response);
+            .then(function(response) {
+                // to be populated in table.
+                $scope.translation_events = response.data.results;
             })
         }
         // call this function on page load
@@ -65,7 +73,7 @@ app.controller('TranslationsController',
 app.directive('showResults', function(){
     return {
         restrict: 'E',
-        template: '<h3>"{{inputText}}"</h3><p>translated from: {{sourceLanguage}}</p><h3>"{{translatedText}}"</h3><p>translated to: {{targetLanguage}}</p>'
+        template: '<h3>"{{inputText}}"</h3><p>translated from: {{ detectedLanguageName }}</p><h3>"{{ translatedText }}"</h3><p>translated to: {{ targetLanguageName }}</p>'
     }
 })
 

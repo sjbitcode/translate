@@ -28,6 +28,10 @@ textarea.ng-pristine {
     border-color: none;
 }
 
-tr td:last-child {
+table#translateTable td:last-child {
     background-color: #F9F9F9;
+}
+
+table#translationsListTable tbody tr th {
+    border: none;
 }
