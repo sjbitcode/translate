@@ -141,6 +141,32 @@ class TranslationTest(APITestCase):
             .get('language_code'), 'fr'
         )
 
+    def test_translate_existing(self):
+        '''
+        Test the POST method on /api/translate.
+        Translate a text, check:
+            two phrases and one translateevent exist
+        Translate same thing again, check:
+            two phrases and one translateevent exist
+        * Ensures that get_or_create executed.
+        '''
+        url = reverse('translate')
+        data = {
+            'text': 'hello',
+            'language': 'italian'
+        }
+
+        response = self.client.post(url, data, **self.post_headers)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Phrase.objects.count(), 2)
+        self.assertEqual(TranslateEvent.objects.count(), 1)
+
+        # Translate same phrase again.
+        response = self.client.post(url, data, **self.post_headers)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Phrase.objects.count(), 2)
+        self.assertEqual(TranslateEvent.objects.count(), 1)
+
     def test_translate_valid_data_1(self):
         '''
         Test the POST method on /api/translate.
