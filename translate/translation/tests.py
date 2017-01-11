@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from .googletranslate import GoogleTranslate
 from .models import Language, Phrase, TranslateEvent
 from .serializers import (
     LanguageSerializer,
@@ -212,3 +213,68 @@ class TranslationTest(APITestCase):
 
         response = self.client.post(url, data, **self.post_headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class TestGoogleTranslate(APITestCase):
+    def setUp(self):
+        self.g = GoogleTranslate()
+
+    def test_detect_language(self):
+        '''
+        Test GoogleTranslate detect_language method.
+        Returns dict with input, confidence, and language.
+        '''
+        text = 'Hola mi amigo'
+        language = 'es'
+
+        # Detect our text, assert that language is 'es'.
+        response = self.g.detect_language(text=text)
+        self.assertEqual(response.get('language'), language)
+
+        # Test empty string, check for 'und' undefined language
+        text = ''
+        language = 'und'
+
+        response = self.g.detect_language(text=text)
+        self.assertEqual(response.get('language'), language)
+
+    def test_translate_text(self):
+        '''
+        Test GoogleTranslate translated_text method.
+        Returns dict with translatedText, input, detectedSourceLanguage.
+        '''
+        text = 'buongiorno'
+        source_language = 'it'
+        target_language = 'en'
+        translated_text = 'good morning'
+
+        # Translate our text to 'en'. Check response object.
+        response = self.g.translate_text(text=text, target_lang=target_language)
+        self.assertEqual(response.get('input'), text)
+        self.assertEqual(response.get('detectedSourceLanguage'), source_language)
+        self.assertEqual(response.get('translatedText'), translated_text)
+
+    def test_language_list(self):
+        '''
+        Test GoogleTranslate language_list method.
+        Returns list of dicts with name and code.
+        '''
+        current_language_count = 104
+
+        response = self.g.language_list()
+        self.assertEqual(len(response), current_language_count)
+
+    def test_language_supported(self):
+        '''
+        Test GoogleTranslate language_supported method.
+        Returns True or False.
+        '''
+        self.assertTrue(self.g.language_supported('en'))
+        self.assertTrue(self.g.language_supported('es'))
+        self.assertTrue(self.g.language_supported('fr'))
+        self.assertTrue(self.g.language_supported('it'))
+        self.assertTrue(self.g.language_supported('ja'))
+
+        self.assertFalse(self.g.language_supported(''))
+        self.assertFalse(self.g.language_supported('4'))
+        self.assertFalse(self.g.language_supported('aaaaaaaa'))
